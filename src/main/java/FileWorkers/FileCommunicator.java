@@ -13,9 +13,9 @@ public class FileCommunicator {
     private final FileDataWriter fileDataWriter;
     private TextBlock prevBlock, currentBlock, nextBlock;
 
-    public FileCommunicator(String fileName) throws IOException {
-        fileDataReader = new FileDataReader(fileName);
-        fileDataWriter = new FileDataWriter(fileName);
+    public FileCommunicator(String inputFilename, String outputFileName) throws IOException {
+        fileDataReader = new FileDataReader(inputFilename);
+        fileDataWriter = new FileDataWriter(outputFileName);
         prevBlock = new TextBlock();
         currentBlock = new TextBlock();
         nextBlock = new TextBlock();
@@ -27,6 +27,19 @@ public class FileCommunicator {
         currentBlock = nextBlock;
         insertTextFromFileInBlock(nextBlock);
         return currentBlock;
+    }
+
+    public boolean isOver() throws IOException {
+        return fileDataReader.hasNextLine();
+    }
+
+    public void closeBuffers() throws IOException {
+        fileDataWriter.closeWriter();
+        fileDataReader.closeReader();
+    }
+
+    synchronized public void insertTextInOutputFile(List<String> textForInsertion) throws IOException {
+        fileDataWriter.writeLines(textForInsertion);
     }
 
     public TextBlock getPrevBlock() {
@@ -48,14 +61,12 @@ public class FileCommunicator {
 
     private void insertTextFromFileInBlock(TextBlock block) throws IOException {
         List<String> textForBlock = new ArrayList<>();
-        for(int i = 0; i < VALUE_OF_LINES_IN_BLOCK; i++){
-            if(!fileDataReader.hasNextLine()){
+        for (int i = 0; i < VALUE_OF_LINES_IN_BLOCK; i++) {
+            if (!fileDataReader.hasNextLine()) {
                 break;
             }
             textForBlock.add(fileDataReader.getNextLine());
         }
         block.setTextLines(textForBlock);
     }
-
-
 }

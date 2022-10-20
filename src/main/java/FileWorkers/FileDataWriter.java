@@ -22,7 +22,7 @@ public class FileDataWriter {
     }
 
     public void writeLines(List<String> lines) throws IOException {
-        for(String line : lines){
+        for (String line : lines) {
             writeLine(line);
         }
     }
