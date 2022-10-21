@@ -38,7 +38,7 @@ public class FileCommunicator {
         fileDataReader.closeReader();
     }
 
-    synchronized public void insertTextInOutputFile(List<String> textForInsertion) throws IOException {
+    public void insertTextInOutputFile(List<String> textForInsertion) throws IOException {
         fileDataWriter.writeLines(textForInsertion);
     }
 

@@ -10,12 +10,24 @@ public class TextBlock {
     private int valueOfBlocks;
 
     public List<String> getThreadPartOfText(int partValue) {
-        //TODO: check if end array position is less than we want to take
+        int leftEdge = partValue * THREAD_READ_LINES_VALUE;
+        int rightEdge = (partValue + 1) * THREAD_READ_LINES_VALUE;
+        if(rightEdge > textLines.size()){
+            return new ArrayList<>(textLines.subList(leftEdge, textLines.size() - 1));
+        }
         return new ArrayList<>(textLines.subList(partValue * THREAD_READ_LINES_VALUE, (partValue + 1) * THREAD_READ_LINES_VALUE));
     }
 
     public void setTextLines(List<String> textLines) {
         this.textLines = textLines;
+    }
+
+    public List<String> getTextLines(){
+        return textLines;
+    }
+
+    public boolean isEmpty(){
+        return textLines.isEmpty();
     }
 
 }
