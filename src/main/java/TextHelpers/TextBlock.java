@@ -10,8 +10,14 @@ public class TextBlock {
     private int valueOfBlocks;
 
     public List<String> getThreadPartOfText(int partValue) {
+        if(textLines.isEmpty()){
+            return new ArrayList<>();
+        }
         int leftEdge = partValue * THREAD_READ_LINES_VALUE;
         int rightEdge = (partValue + 1) * THREAD_READ_LINES_VALUE;
+        if(leftEdge > textLines.size()){
+            return new ArrayList<>();
+        }
         if (rightEdge > textLines.size()) {
             return new ArrayList<>(textLines.subList(leftEdge, textLines.size()));
         }
