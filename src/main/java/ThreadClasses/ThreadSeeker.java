@@ -1,6 +1,5 @@
 package ThreadClasses;
 
-import Exceptions.WrongThreadSettingsValues;
 import FileWorkers.FileCommunicator;
 import TextHelpers.TextBlock;
 
@@ -38,10 +37,8 @@ public class ThreadSeeker implements Runnable {
     @Override
     public void run() {
         try {
-            if (currentStartPosInBlock > VALUE_OF_LINES_IN_BLOCK) {
-                throw new WrongThreadSettingsValues("currentStartPosInBlock should be more than VALUE_OF_LINES_IN_BLOCK");
-            }
             while (!fileCommunicator.getCurrentBlock().isEmpty()) {
+
                 while (currentStartPosInBlock < VALUE_OF_LINES_IN_BLOCK) {
                     workWithPartOfText();
                     updateThreadReadingInfo(alreadyCheckedBlocks + 1);
@@ -49,8 +46,7 @@ public class ThreadSeeker implements Runnable {
                 updateThreadReadingInfo(0);
                 cyclicBarrier.await();
             }
-            System.out.println("end");
-        } catch (IOException | BrokenBarrierException | InterruptedException | WrongThreadSettingsValues e) {
+        } catch (IOException | BrokenBarrierException | InterruptedException e) {
             e.printStackTrace();
         }
     }

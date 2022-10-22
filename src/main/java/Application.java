@@ -14,13 +14,13 @@ import static Settings.CONSTANTS.VALUE_OF_THREADS;
 
 public class Application {
     public static final String PATH = "D:\\Paul\\Programming\\Java\\RPKS\\Labs\\MultithreadingSubstr\\src\\main\\resources";
-    private static final String inFile = PATH + "\\BIG.txt";//"\\LOTR.txt";
+    private static final String inFile = PATH + "\\LOTR.txt";//
     private static final String outFile = PATH + "\\out.txt";
 
 
     public static void main(String[] args) throws IOException {
         final int epsilonTextGet = 4;
-        final String keyWord = "road";
+        final String keyWord = "ring";
 
         //todo: checking that 0 < epsilonTextGet <= 3*VALUE_OF_LINES_IN_BLOCK
         try {
@@ -33,7 +33,7 @@ public class Application {
                 listOfThreads.add(threadSeeker);
             }
 
-            long start = System.currentTimeMillis();
+            long start = System.nanoTime();
             List<Future<?>> listOfFuture = new ArrayList<>();
             for (int i = 0; i < VALUE_OF_THREADS; i++) {
                 Future<?> future = threadingFixedPool.submit(listOfThreads.get(i));
@@ -44,9 +44,9 @@ public class Application {
             while (!allIsDone) {
                 allIsDone = listOfFuture.stream().allMatch(Future::isDone);
             }
-            long end = System.currentTimeMillis();
+            long end = System.nanoTime();
             long time = end - start;
-            System.out.println(time + " ms");
+            System.out.println(time + " ns");
             threadingFixedPool.shutdown();
             fileCommunicator.closeBuffers();
 
