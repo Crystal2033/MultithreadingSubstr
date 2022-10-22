@@ -20,7 +20,7 @@ public class Application {
 
     public static void main(String[] args) throws IOException {
         final int epsilonTextGet = 4;
-        final String keyWord = "the";
+        final String keyWord = "road";
 
         //todo: checking that 0 < epsilonTextGet <= 3*VALUE_OF_LINES_IN_BLOCK
         try {
