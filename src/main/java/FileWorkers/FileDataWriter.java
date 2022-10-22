@@ -16,11 +16,11 @@ public class FileDataWriter {
 
     }
 
-    public void writeLine(String line) throws IOException {
-        bufferedWriter.write(line);
-        bufferedWriter.newLine();
-        bufferedWriter.flush();
-    }
+//    public void writeLine(String line) throws IOException {
+//        bufferedWriter.write(line);
+//        bufferedWriter.newLine();
+//        bufferedWriter.flush();
+//    }
 
     synchronized public void writeLines(List<String> lines) throws IOException {
         for (String line : lines) {

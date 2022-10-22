@@ -5,15 +5,13 @@ import TextHelpers.TextBlock;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CyclicBarrier;
 
 import static Settings.CONSTANTS.VALUE_OF_LINES_IN_BLOCK;
 
 public class FileCommunicator {
     private final FileDataReader fileDataReader;
     private final FileDataWriter fileDataWriter;
-    private TextBlock prevBlock, currentBlock, nextBlock;
-    //private static final CyclicBarrier BARRIER = new CyclicBarrier();
+    private final TextBlock prevBlock, currentBlock, nextBlock;
 
     public FileCommunicator(String inputFilename, String outputFileName) throws IOException {
         fileDataReader = new FileDataReader(inputFilename);
@@ -24,24 +22,12 @@ public class FileCommunicator {
         initTextBlocks();
     }
 
-//    public TextBlock refillBlocksAndGetCurrent() throws IOException {
-//        prevBlock = currentBlock;
-//        currentBlock = nextBlock;
-//        insertTextFromFileInBlock(nextBlock);
-//        return currentBlock;
-//    }
-
     public void updateBlocks() throws IOException {
         prevBlock.setTextLines(currentBlock.getTextLines());
-        //prevBlock = currentBlock;
-        //currentBlock = nextBlock;
         currentBlock.setTextLines(nextBlock.getTextLines());
         insertTextFromFileInBlock(nextBlock);
     }
 
-    public boolean isOver() throws IOException {
-        return fileDataReader.hasNextLine();
-    }
 
     public void closeBuffers() throws IOException {
         fileDataWriter.closeWriter();

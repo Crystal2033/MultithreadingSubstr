@@ -37,28 +37,22 @@ public class ThreadSeeker implements Runnable {
 
     @Override
     public void run() {
-        // TODO: ADD CONCURRENCY
         try {
-//            if(currentStartPosInBlock > VALUE_OF_LINES_IN_BLOCK){
-//                throw new WrongThreadSettingsValues("currentStartPosInBlock should be more than VALUE_OF_LINES_IN_BLOCK");
-//            }
+            if(currentStartPosInBlock > VALUE_OF_LINES_IN_BLOCK){
+                throw new WrongThreadSettingsValues("currentStartPosInBlock should be more than VALUE_OF_LINES_IN_BLOCK");
+            }
             while(!fileCommunicator.getCurrentBlock().isEmpty()) {
                 while (currentStartPosInBlock < VALUE_OF_LINES_IN_BLOCK) {
                     workWithPartOfText();
                     updateThreadReadingInfo(alreadyCheckedBlocks + 1);
                 }
-                System.out.println("Done one part, i`m " + thread.getName());
                 updateThreadReadingInfo(0);
                 cyclicBarrier.await();
             }
             System.out.println("end");
-        } catch (IOException | BrokenBarrierException | InterruptedException  e) {
+        } catch (IOException | BrokenBarrierException | InterruptedException | WrongThreadSettingsValues e) {
             e.printStackTrace();
         }
-//        } catch (WrongThreadSettingsValues wrongThreadSettingsValues) {
-//            wrongThreadSettingsValues.printStackTrace();
-//            System.err.println(wrongThreadSettingsValues.getMessage());
-//        }
     }
 
     private void recountCurrentStartPosInBlock(){
@@ -105,8 +99,8 @@ public class ThreadSeeker implements Runnable {
             return new ArrayList<>();
         }
         List<String> prevBlockText = prevBlock.getTextLines();
-        //TODO HERE IS BAD WORK
-        int leftEdgeIndex = prevBlockText.size() - (posOfKeyWord - valueOfPrevAndNextLines);
+
+        int leftEdgeIndex = prevBlockText.size() - (valueOfPrevAndNextLines - posOfKeyWord);
 
         if (leftEdgeIndex < 0) {
             return prevBlockText;
@@ -119,7 +113,7 @@ public class ThreadSeeker implements Runnable {
 
         List<String> currBlockText = currentBlock.getTextLines();
         int leftEdgeIndex = Math.max(posOfKeyWord - valueOfPrevAndNextLines, 0);
-        int rightEdgeIndex = Math.min(posOfKeyWord + valueOfPrevAndNextLines + 1, currBlockText.size()); // + 1 because of sublist exclusive last index
+        int rightEdgeIndex = Math.min(posOfKeyWord + valueOfPrevAndNextLines + 1, currBlockText.size()); // + 1 because of sublist EXclusive last index
 
         return new ArrayList<>(currBlockText.subList(leftEdgeIndex, rightEdgeIndex));
     }
@@ -141,7 +135,6 @@ public class ThreadSeeker implements Runnable {
 
     private void workWithPartOfText() throws IOException {
         List<String> threadLines = fileCommunicator.getCurrentBlock().getThreadPartOfText(id + VALUE_OF_THREADS * alreadyCheckedBlocks);
-        System.out.println(id);
         for (int i = 0; i < threadLines.size(); i++) {
             if (threadLines.get(i).contains(keyWord)) {
                 createTextAroundKeyWordAndSend(i + currentStartPosInBlock);
