@@ -21,7 +21,6 @@ public class Application {
     public static void main(String[] args) throws IOException {
         final int epsilonTextGet = 4;
         final String keyWord = "the";
-        long start = System.currentTimeMillis();
 
         //todo: checking that 0 < epsilonTextGet <= 3*VALUE_OF_LINES_IN_BLOCK
         try {
@@ -34,6 +33,7 @@ public class Application {
                 listOfThreads.add(threadSeeker);
             }
 
+            long start = System.currentTimeMillis();
             List<Future<?>> listOfFuture = new ArrayList<>();
             for (int i = 0; i < VALUE_OF_THREADS; i++) {
                 Future<?> future = threadingFixedPool.submit(listOfThreads.get(i));

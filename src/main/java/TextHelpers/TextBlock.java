@@ -7,7 +7,6 @@ import static Settings.CONSTANTS.THREAD_READ_LINES_VALUE;
 
 public class TextBlock {
     private List<String> textLines = new ArrayList<>();
-    private int valueOfBlocks;
 
     public List<String> getThreadPartOfText(int partValue) {
         if(textLines.isEmpty()){

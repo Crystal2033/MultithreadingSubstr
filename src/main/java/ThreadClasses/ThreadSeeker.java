@@ -20,10 +20,10 @@ public class ThreadSeeker implements Runnable {
     private final int id;
     private final Thread thread;
     private final String keyWord;
+    private final CyclicBarrier cyclicBarrier;
     private int sumOfCheckedBlocks = 0;
     private int alreadyCheckedBlocks = 0;
     private int currentStartPosInBlock = 0;
-    private final CyclicBarrier cyclicBarrier;
 
     public ThreadSeeker(int valueOfPrevAndNextLines, FileCommunicator fileCommunicator, String keyWord, CyclicBarrier cyclicBarrier) throws InterruptedException {
         this.keyWord = keyWord;
@@ -38,10 +38,10 @@ public class ThreadSeeker implements Runnable {
     @Override
     public void run() {
         try {
-            if(currentStartPosInBlock > VALUE_OF_LINES_IN_BLOCK){
+            if (currentStartPosInBlock > VALUE_OF_LINES_IN_BLOCK) {
                 throw new WrongThreadSettingsValues("currentStartPosInBlock should be more than VALUE_OF_LINES_IN_BLOCK");
             }
-            while(!fileCommunicator.getCurrentBlock().isEmpty()) {
+            while (!fileCommunicator.getCurrentBlock().isEmpty()) {
                 while (currentStartPosInBlock < VALUE_OF_LINES_IN_BLOCK) {
                     workWithPartOfText();
                     updateThreadReadingInfo(alreadyCheckedBlocks + 1);
@@ -55,12 +55,12 @@ public class ThreadSeeker implements Runnable {
         }
     }
 
-    private void recountCurrentStartPosInBlock(){
+    private void recountCurrentStartPosInBlock() {
         currentStartPosInBlock = (id + VALUE_OF_THREADS * alreadyCheckedBlocks) * THREAD_READ_LINES_VALUE;
     }
 
-    private void updateThreadReadingInfo(int newCheckedBlocksValue){
-        if(newCheckedBlocksValue == 0){
+    private void updateThreadReadingInfo(int newCheckedBlocksValue) {
+        if (newCheckedBlocksValue == 0) {
             sumOfCheckedBlocks += alreadyCheckedBlocks;
         }
         alreadyCheckedBlocks = newCheckedBlocksValue;
@@ -131,7 +131,6 @@ public class ThreadSeeker implements Runnable {
         return new ArrayList<>(nextBlockText.subList(0, rightEdgeIndex));
 
     }
-
 
     private void workWithPartOfText() throws IOException {
         List<String> threadLines = fileCommunicator.getCurrentBlock().getThreadPartOfText(id + VALUE_OF_THREADS * alreadyCheckedBlocks);
