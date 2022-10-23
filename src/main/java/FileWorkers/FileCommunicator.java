@@ -1,7 +1,6 @@
 package FileWorkers;
 
 import TextHelpers.TextBlock;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -32,12 +31,10 @@ public class FileCommunicator {
 
     public void insertTextInOutputFile() throws IOException {
         List<String> allFoundTextList = new LinkedList<>();
-        while(!queueForOutputText.isEmpty()) {
+        while (!queueForOutputText.isEmpty()) {
             TextBlock textBlock = queueForOutputText.poll();
             allFoundTextList.addAll(textBlock.getTextLines());
             allFoundTextList.add("------------------------------------------------------------------------");
-            //fileDataWriter.writeLines(textBlock.getTextLines());
-            //allFoundTextList.addAll(textBlock.getTextLines());
         }
         fileDataWriter.writeLines(allFoundTextList);
 
@@ -48,9 +45,8 @@ public class FileCommunicator {
         fileDataReader.closeReader();
     }
 
-    public void insertTextInQueueForOutput(List<String> textForInsertion, int posInAllText) throws IOException {
+    public void insertTextInQueueForOutput(List<String> textForInsertion, int posInAllText) {
         queueForOutputText.add(new TextBlock(posInAllText, textForInsertion));
-        //fileDataWriter.writeLines(textForInsertion);
     }
 
     public TextBlock getPrevBlock() {

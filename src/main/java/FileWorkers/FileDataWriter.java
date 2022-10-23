@@ -15,20 +15,12 @@ public class FileDataWriter {
         bufferedWriter = new BufferedWriter(fileWriter);
 
     }
-//
-//    public void writeLine(String line) throws IOException {
-//        bufferedWriter.write(line);
-//        bufferedWriter.newLine();
-//        bufferedWriter.flush();
-//    }
 
     synchronized public void writeLines(List<String> lines) throws IOException {
         for (String line : lines) {
             bufferedWriter.write(line);
             bufferedWriter.newLine();
         }
-        //bufferedWriter.write("------------------------------------------------------------------------");
-        //bufferedWriter.newLine();
         bufferedWriter.flush();
     }
 

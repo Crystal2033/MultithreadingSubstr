@@ -11,6 +11,7 @@ import java.util.concurrent.CyclicBarrier;
 
 import static Settings.CONSTANTS.*;
 
+
 public class ThreadSeeker implements Runnable {
 
     private static int threadID = 0;
@@ -29,7 +30,7 @@ public class ThreadSeeker implements Runnable {
         this.valueOfPrevAndNextLines = valueOfPrevAndNextLines;
         this.fileCommunicator = fileCommunicator;
         id = threadID++;
-        thread = new Thread("Hobbit" + Integer.toString(id));
+        thread = new Thread(this,"Hobbit" + id);
         recountCurrentStartPosInBlock();
         this.cyclicBarrier = cyclicBarrier;
     }
@@ -40,12 +41,11 @@ public class ThreadSeeker implements Runnable {
             while (!fileCommunicator.getCurrentBlock().isEmpty()) {
                 while (currentStartPosInBlock < VALUE_OF_LINES_IN_BLOCK) {
                     workWithPartOfText();
-                    System.out.println(currentStartPosInBlock + " " + thread.getName());
                     updateThreadReadingInfo(alreadyCheckedBlocks + 1);
                 }
-
                 updateThreadReadingInfo(0);
                 cyclicBarrier.await();
+                //System.out.println(thread.getName() + " already checked: " + sumOfCheckedBlocks*THREAD_READ_LINES_VALUE);
             }
         } catch (IOException | BrokenBarrierException | InterruptedException e) {
             e.printStackTrace();
@@ -64,7 +64,7 @@ public class ThreadSeeker implements Runnable {
         recountCurrentStartPosInBlock();
     }
 
-    private void createTextAroundKeyWordAndSend(int posOfKeyWord) throws IOException {
+    private void createTextAroundKeyWordAndSend(int posOfKeyWord){
         int leftEdge = posOfKeyWord - valueOfPrevAndNextLines;
         int rightEdge = posOfKeyWord + valueOfPrevAndNextLines;
 
@@ -74,25 +74,17 @@ public class ThreadSeeker implements Runnable {
             outputText.addAll(getTextFromPrevBlock(posOfKeyWord));
             outputText.addAll(getTextFromCurrentBlock(posOfKeyWord));
             outputText.addAll(getTextFromNextBlock(posOfKeyWord));
-            //System.out.println("text: " + outputText);
         } else if (leftEdge < 0) {
             outputText.addAll(getTextFromPrevBlock(posOfKeyWord));
             outputText.addAll(getTextFromCurrentBlock(posOfKeyWord));
-            //System.out.println("text: " + outputText);
 
         } else if (rightEdge > VALUE_OF_LINES_IN_BLOCK - 1) {
             outputText.addAll(getTextFromCurrentBlock(posOfKeyWord));
             outputText.addAll(getTextFromNextBlock(posOfKeyWord));
-            //System.out.println("text: " + outputText);
         } else {
             outputText.addAll(getTextFromCurrentBlock(posOfKeyWord));
-            //System.out.println("text: " + outputText);
         }
-
-        //outputText.add(thread.getName());
-        //System.out.println("text: " + outputText);
         fileCommunicator.insertTextInQueueForOutput(outputText, posOfKeyWord);
-
     }
 
 
@@ -116,7 +108,7 @@ public class ThreadSeeker implements Runnable {
 
         List<String> currBlockText = currentBlock.getTextLines();
         int leftEdgeIndex = Math.max(posOfKeyWord - valueOfPrevAndNextLines, 0);
-        int rightEdgeIndex = Math.min(posOfKeyWord + valueOfPrevAndNextLines + 1, currBlockText.size()); // + 1 because of sublist EXclusive last index
+        int rightEdgeIndex = Math.min(posOfKeyWord + valueOfPrevAndNextLines + 1, currBlockText.size()); // + 1 because of sublist Exclusive last index
 
         return new ArrayList<>(currBlockText.subList(leftEdgeIndex, rightEdgeIndex));
     }

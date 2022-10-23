@@ -1,5 +1,4 @@
 import FileWorkers.FileCommunicator;
-import FileWorkers.FileDataWriter;
 import ThreadClasses.TextBlockChanger;
 import ThreadClasses.ThreadSeeker;
 
@@ -11,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import static Settings.CONSTANTS.VALUE_OF_LINES_IN_BLOCK;
 import static Settings.CONSTANTS.VALUE_OF_THREADS;
 
 public class Application {
@@ -19,12 +19,17 @@ public class Application {
     private static final String outFile = PATH + "\\out2.txt";
 
 
-    public static void main(String[] args) throws IOException {
-        final int epsilonTextGet = 2;
+    public static void main(String[] args){
+        final String epsilonTextGetStr = "2";
         final String keyWord = "Tolkien";
 
+        final int epsilonTextGet = Integer.parseInt(epsilonTextGetStr);
+        if(epsilonTextGet < 0 || epsilonTextGet >VALUE_OF_LINES_IN_BLOCK){
+            System.out.println("Your epsilon value for next and previous value of lines should be more than 0 and " +
+                    "less than " + VALUE_OF_LINES_IN_BLOCK + ".");
+            return;
+        }
 
-        //todo: checking that 0 < epsilonTextGet <= 3*VALUE_OF_LINES_IN_BLOCK
         try {
             FileCommunicator fileCommunicator = new FileCommunicator(inFile, outFile);
             ExecutorService threadingFixedPool = Executors.newFixedThreadPool(VALUE_OF_THREADS);
@@ -53,20 +58,9 @@ public class Application {
             threadingFixedPool.shutdown();
             fileCommunicator.closeBuffers();
 
-        } catch (IOException | InterruptedException ioException) {
+        } catch (IOException | InterruptedException | IllegalArgumentException ioException) {
             System.out.println(ioException.getMessage());
+            ioException.printStackTrace();
         }
-
-
-//        FileDataWriter fileDataWriter = new FileDataWriter(outFile);
-//
-//        int counter = 0;
-//        while(true){
-//            String outputString = "";
-//            for(int i = 0; i < 20; i++){
-//                outputString = outputString + " " + Integer.toString(counter++);
-//            }
-//            fileDataWriter.writeLine(outputString);
-//        }
     }
 }
