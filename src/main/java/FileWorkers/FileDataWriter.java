@@ -27,8 +27,8 @@ public class FileDataWriter {
             bufferedWriter.write(line);
             bufferedWriter.newLine();
         }
-        bufferedWriter.write("------------------------------------------------------------------------");
-        bufferedWriter.newLine();
+        //bufferedWriter.write("------------------------------------------------------------------------");
+        //bufferedWriter.newLine();
         bufferedWriter.flush();
     }
 

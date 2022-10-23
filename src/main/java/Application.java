@@ -20,7 +20,7 @@ public class Application {
 
 
     public static void main(String[] args) throws IOException {
-        final int epsilonTextGet = 0;
+        final int epsilonTextGet = 2;
         final String keyWord = "Tolkien";
 
 

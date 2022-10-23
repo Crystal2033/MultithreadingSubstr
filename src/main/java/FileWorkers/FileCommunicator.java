@@ -34,8 +34,10 @@ public class FileCommunicator {
         List<String> allFoundTextList = new LinkedList<>();
         while(!queueForOutputText.isEmpty()) {
             TextBlock textBlock = queueForOutputText.poll();
-            //fileDataWriter.writeLines(textBlock.getTextLines());
             allFoundTextList.addAll(textBlock.getTextLines());
+            allFoundTextList.add("------------------------------------------------------------------------");
+            //fileDataWriter.writeLines(textBlock.getTextLines());
+            //allFoundTextList.addAll(textBlock.getTextLines());
         }
         fileDataWriter.writeLines(allFoundTextList);
 
