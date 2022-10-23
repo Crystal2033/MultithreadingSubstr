@@ -3,8 +3,8 @@ package FileWorkers;
 import TextHelpers.TextBlock;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import static Settings.CONSTANTS.VALUE_OF_LINES_IN_BLOCK;
 
@@ -12,6 +12,7 @@ public class FileCommunicator {
     private final FileDataReader fileDataReader;
     private final FileDataWriter fileDataWriter;
     private final TextBlock prevBlock, currentBlock, nextBlock;
+    private final Queue<TextBlock> queueForOutputText;
 
     public FileCommunicator(String inputFilename, String outputFileName) throws IOException {
         fileDataReader = new FileDataReader(inputFilename);
@@ -19,6 +20,7 @@ public class FileCommunicator {
         prevBlock = new TextBlock();
         currentBlock = new TextBlock();
         nextBlock = new TextBlock();
+        queueForOutputText = new PriorityBlockingQueue<>(1, Comparator.comparingInt(TextBlock::getPosInAllText));
         initTextBlocks();
     }
 
@@ -28,14 +30,25 @@ public class FileCommunicator {
         insertTextFromFileInBlock(nextBlock);
     }
 
+    public void insertTextInOutputFile() throws IOException {
+        List<String> allFoundTextList = new LinkedList<>();
+        while(!queueForOutputText.isEmpty()) {
+            TextBlock textBlock = queueForOutputText.poll();
+            //fileDataWriter.writeLines(textBlock.getTextLines());
+            allFoundTextList.addAll(textBlock.getTextLines());
+        }
+        fileDataWriter.writeLines(allFoundTextList);
+
+    }
 
     public void closeBuffers() throws IOException {
         fileDataWriter.closeWriter();
         fileDataReader.closeReader();
     }
 
-    public void insertTextInOutputFile(List<String> textForInsertion) throws IOException {
-        fileDataWriter.writeLines(textForInsertion);
+    public void insertTextInQueueForOutput(List<String> textForInsertion, int posInAllText) throws IOException {
+        queueForOutputText.add(new TextBlock(posInAllText, textForInsertion));
+        //fileDataWriter.writeLines(textForInsertion);
     }
 
     public TextBlock getPrevBlock() {

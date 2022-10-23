@@ -15,7 +15,7 @@ public class FileDataWriter {
         bufferedWriter = new BufferedWriter(fileWriter);
 
     }
-
+//
 //    public void writeLine(String line) throws IOException {
 //        bufferedWriter.write(line);
 //        bufferedWriter.newLine();

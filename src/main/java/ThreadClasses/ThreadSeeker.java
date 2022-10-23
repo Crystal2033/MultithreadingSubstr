@@ -38,11 +38,12 @@ public class ThreadSeeker implements Runnable {
     public void run() {
         try {
             while (!fileCommunicator.getCurrentBlock().isEmpty()) {
-
                 while (currentStartPosInBlock < VALUE_OF_LINES_IN_BLOCK) {
                     workWithPartOfText();
+                    System.out.println(currentStartPosInBlock + " " + thread.getName());
                     updateThreadReadingInfo(alreadyCheckedBlocks + 1);
                 }
+
                 updateThreadReadingInfo(0);
                 cyclicBarrier.await();
             }
@@ -57,7 +58,7 @@ public class ThreadSeeker implements Runnable {
 
     private void updateThreadReadingInfo(int newCheckedBlocksValue) {
         if (newCheckedBlocksValue == 0) {
-            sumOfCheckedBlocks += alreadyCheckedBlocks;
+            this.sumOfCheckedBlocks += alreadyCheckedBlocks;
         }
         alreadyCheckedBlocks = newCheckedBlocksValue;
         recountCurrentStartPosInBlock();
@@ -73,18 +74,24 @@ public class ThreadSeeker implements Runnable {
             outputText.addAll(getTextFromPrevBlock(posOfKeyWord));
             outputText.addAll(getTextFromCurrentBlock(posOfKeyWord));
             outputText.addAll(getTextFromNextBlock(posOfKeyWord));
+            //System.out.println("text: " + outputText);
         } else if (leftEdge < 0) {
             outputText.addAll(getTextFromPrevBlock(posOfKeyWord));
             outputText.addAll(getTextFromCurrentBlock(posOfKeyWord));
+            //System.out.println("text: " + outputText);
 
         } else if (rightEdge > VALUE_OF_LINES_IN_BLOCK - 1) {
             outputText.addAll(getTextFromCurrentBlock(posOfKeyWord));
             outputText.addAll(getTextFromNextBlock(posOfKeyWord));
+            //System.out.println("text: " + outputText);
         } else {
             outputText.addAll(getTextFromCurrentBlock(posOfKeyWord));
+            //System.out.println("text: " + outputText);
         }
-        outputText.add(thread.getName());
-        fileCommunicator.insertTextInOutputFile(outputText);
+
+        //outputText.add(thread.getName());
+        //System.out.println("text: " + outputText);
+        fileCommunicator.insertTextInQueueForOutput(outputText, posOfKeyWord);
 
     }
 
