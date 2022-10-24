@@ -18,21 +18,21 @@ public record TextBlockChanger(FileCommunicator fileCommunicator) implements Run
     }
 
     private void getProgress(){
-//        System.out.println("Already checked: " +
-//                (float)fileCommunicator.getBytesAlreadyChecked() / (float)fileCommunicator.getFileSize() * 100
-//                + "% of file. Found: " + fileCommunicator.getFoundKeyWords() + " matches.");
+        System.out.printf("Already checked: %.2f%% of file. Found: %d matches.\n",
+                (float)fileCommunicator.getBytesAlreadyChecked() / (float)fileCommunicator.getFileSize() * 100,
+                fileCommunicator.getFoundKeyWords());
 
-        final int valueOfTicksInProgress = (int)((float)fileCommunicator.getBytesAlreadyChecked()
-                / (float)fileCommunicator.getFileSize() * 100) / 2;
-        StringBuilder progressBar = new StringBuilder();
-        for(int i = 0; i < 50; i++){
-            if(i < valueOfTicksInProgress){
-                progressBar.append("*");
-                continue;
-            }
-            progressBar.append("-");
-        }
-        System.out.println("Already checked: " + progressBar
-                + "   Found: " + fileCommunicator.getFoundKeyWords() + " matches.");
+//        final int valueOfTicksInProgress = (int)((float)fileCommunicator.getBytesAlreadyChecked()
+//                / (float)fileCommunicator.getFileSize() * 100) / 2;
+//        StringBuilder progressBar = new StringBuilder();
+//        for(int i = 0; i < 50; i++){
+//            if(i < valueOfTicksInProgress){
+//                progressBar.append("*");
+//                continue;
+//            }
+//            progressBar.append("-");
+//        }
+//        System.out.println("Already checked: " + progressBar
+//                + "   Found: " + fileCommunicator.getFoundKeyWords() + " matches.");
     }
 }
