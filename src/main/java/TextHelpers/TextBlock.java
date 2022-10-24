@@ -49,4 +49,12 @@ public class TextBlock {
         return textLines.isEmpty();
     }
 
+    public long getBlockSize(){
+        long bytesInText = 0;
+        for(String line : textLines){
+            bytesInText += line.length();
+        }
+        return bytesInText;
+    }
+
 }

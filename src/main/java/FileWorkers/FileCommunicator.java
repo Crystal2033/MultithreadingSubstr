@@ -12,9 +12,13 @@ public class FileCommunicator {
     private final FileDataWriter fileDataWriter;
     private final TextBlock prevBlock, currentBlock, nextBlock;
     private final Queue<TextBlock> queueForOutputText;
+    private final long fileSize;
+    private long bytesAlreadyChecked;
+    private int foundKeyWords = 0;
 
     public FileCommunicator(String inputFilename, String outputFileName) throws IOException {
         fileDataReader = new FileDataReader(inputFilename);
+        fileSize = fileDataReader.getFileSize();
         fileDataWriter = new FileDataWriter(outputFileName);
         prevBlock = new TextBlock();
         currentBlock = new TextBlock();
@@ -25,12 +29,14 @@ public class FileCommunicator {
 
     public void updateBlocks() throws IOException {
         prevBlock.setTextLines(currentBlock.getTextLines());
+        bytesAlreadyChecked += currentBlock.getBlockSize();
         currentBlock.setTextLines(nextBlock.getTextLines());
         insertTextFromFileInBlock(nextBlock);
     }
 
     public void insertTextInOutputFile() throws IOException {
         List<String> allFoundTextList = new LinkedList<>();
+        foundKeyWords += queueForOutputText.size();
         while (!queueForOutputText.isEmpty()) {
             TextBlock textBlock = queueForOutputText.poll();
             allFoundTextList.addAll(textBlock.getTextLines());
@@ -59,6 +65,18 @@ public class FileCommunicator {
 
     public TextBlock getNextBlock() {
         return nextBlock;
+    }
+
+    public long getBytesAlreadyChecked() {
+        return bytesAlreadyChecked;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public int getFoundKeyWords() {
+        return foundKeyWords;
     }
 
     private void initTextBlocks() throws IOException {

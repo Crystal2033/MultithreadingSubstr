@@ -21,7 +21,6 @@ public class ThreadSeeker implements Runnable {
     private final Thread thread;
     private final String keyWord;
     private final CyclicBarrier cyclicBarrier;
-    private int sumOfCheckedBlocks = 0;
     private int alreadyCheckedBlocks = 0;
     private int currentStartPosInBlock = 0;
 
@@ -45,7 +44,7 @@ public class ThreadSeeker implements Runnable {
                 }
                 updateThreadReadingInfo(0);
                 cyclicBarrier.await();
-                //System.out.println(thread.getName() + " already checked: " + sumOfCheckedBlocks*THREAD_READ_LINES_VALUE);
+
             }
         } catch (IOException | BrokenBarrierException | InterruptedException e) {
             e.printStackTrace();
@@ -57,9 +56,6 @@ public class ThreadSeeker implements Runnable {
     }
 
     private void updateThreadReadingInfo(int newCheckedBlocksValue) {
-        if (newCheckedBlocksValue == 0) {
-            this.sumOfCheckedBlocks += alreadyCheckedBlocks;
-        }
         alreadyCheckedBlocks = newCheckedBlocksValue;
         recountCurrentStartPosInBlock();
     }

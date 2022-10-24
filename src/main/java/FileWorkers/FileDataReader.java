@@ -4,9 +4,10 @@ import java.io.*;
 
 public class FileDataReader {
     private final BufferedReader bufferedReader;
+    private final File file;
 
     public FileDataReader(String fileName) throws IOException {
-        File file = new File(fileName);
+        file = new File(fileName);
         if (!file.exists()) {
             throw new FileNotFoundException("File " + file.getName() + " was not found.");
         }
@@ -29,5 +30,9 @@ public class FileDataReader {
 
     public boolean hasNextLine() throws IOException {
         return bufferedReader.ready();
+    }
+
+    public long getFileSize(){
+        return file.length();
     }
 }
