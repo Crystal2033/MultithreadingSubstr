@@ -10,7 +10,11 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 import static Settings.CONSTANTS.*;
-
+/**
+ * @project SubstrFinder
+ * ©Crystal2033
+ * @date 21/10/2022
+ */
 
 public class ThreadSeeker implements Runnable {
 
@@ -18,7 +22,6 @@ public class ThreadSeeker implements Runnable {
     private final int valueOfPrevAndNextLines;
     private final FileCommunicator fileCommunicator;
     private final int id;
-    private final Thread thread;
     private final String keyWord;
     private final CyclicBarrier cyclicBarrier;
     private int alreadyCheckedBlocks = 0;
@@ -29,7 +32,7 @@ public class ThreadSeeker implements Runnable {
         this.valueOfPrevAndNextLines = valueOfPrevAndNextLines;
         this.fileCommunicator = fileCommunicator;
         id = threadID++;
-        thread = new Thread(this,"Hobbit" + id);
+        new Thread(this, "Hobbit" + id);
         recountCurrentStartPosInBlock();
         this.cyclicBarrier = cyclicBarrier;
     }
@@ -44,7 +47,6 @@ public class ThreadSeeker implements Runnable {
                 }
                 updateThreadReadingInfo(0);
                 cyclicBarrier.await();
-
             }
         } catch (IOException | BrokenBarrierException | InterruptedException e) {
             e.printStackTrace();

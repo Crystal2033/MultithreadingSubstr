@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Settings.CONSTANTS.THREAD_READ_LINES_VALUE;
-
+/**
+ * @project SubstrFinder
+ * ©Crystal2033
+ * @date 21/10/2022
+ */
 public class TextBlock {
     private List<String> textLines = new ArrayList<>();
     private final int posInAllText;

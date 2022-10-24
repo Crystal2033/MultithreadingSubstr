@@ -1,9 +1,14 @@
 package ThreadClasses;
 
+import COLORS.ConsoleColors;
 import FileWorkers.FileCommunicator;
 
 import java.io.IOException;
-
+/**
+ * @project SubstrFinder
+ * ©Crystal2033
+ * @date 21/10/2022
+ */
 public record TextBlockChanger(FileCommunicator fileCommunicator) implements Runnable {
 
     @Override
@@ -18,21 +23,9 @@ public record TextBlockChanger(FileCommunicator fileCommunicator) implements Run
     }
 
     private void getProgress(){
-        System.out.printf("Already checked: %.2f%% of file. Found: %d matches.\n",
-                (float)fileCommunicator.getBytesAlreadyChecked() / (float)fileCommunicator.getFileSize() * 100,
-                fileCommunicator.getFoundKeyWords());
-
-//        final int valueOfTicksInProgress = (int)((float)fileCommunicator.getBytesAlreadyChecked()
-//                / (float)fileCommunicator.getFileSize() * 100) / 2;
-//        StringBuilder progressBar = new StringBuilder();
-//        for(int i = 0; i < 50; i++){
-//            if(i < valueOfTicksInProgress){
-//                progressBar.append("*");
-//                continue;
-//            }
-//            progressBar.append("-");
-//        }
-//        System.out.println("Already checked: " + progressBar
-//                + "   Found: " + fileCommunicator.getFoundKeyWords() + " matches.");
+        System.out.printf("Already checked: %.2f%% of file.",
+                (float)fileCommunicator.getBytesAlreadyChecked() / (float)fileCommunicator.getFileSize() * 100);
+        System.out.println("Was found "  + ConsoleColors.CYAN_BRIGHT + fileCommunicator.getFoundKeyWords()
+                + ConsoleColors.RESET + " matches.");
     }
 }

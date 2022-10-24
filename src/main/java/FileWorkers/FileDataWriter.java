@@ -2,7 +2,11 @@ package FileWorkers;
 
 import java.io.*;
 import java.util.List;
-
+/**
+ * @project SubstrFinder
+ * ©Crystal2033
+ * @date 21/10/2022
+ */
 public class FileDataWriter {
     private final BufferedWriter bufferedWriter;
 

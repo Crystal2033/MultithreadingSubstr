@@ -1,7 +1,11 @@
 package FileWorkers;
 
 import java.io.*;
-
+/**
+ * @project SubstrFinder
+ * ©Crystal2033
+ * @date 21/10/2022
+ */
 public class FileDataReader {
     private final BufferedReader bufferedReader;
     private final File file;

@@ -4,9 +4,12 @@ import TextHelpers.TextBlock;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.PriorityBlockingQueue;
-
 import static Settings.CONSTANTS.VALUE_OF_LINES_IN_BLOCK;
-
+/**
+ * @project SubstrFinder
+ * ©Crystal2033
+ * @date 21/10/2022
+ */
 public class FileCommunicator {
     private final FileDataReader fileDataReader;
     private final FileDataWriter fileDataWriter;
