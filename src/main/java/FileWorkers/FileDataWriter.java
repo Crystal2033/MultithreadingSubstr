@@ -12,9 +12,8 @@ public class FileDataWriter {
 
     public FileDataWriter(String fileName) throws IOException {
         File file = new File(fileName);
-        if (!file.exists()) {
-            throw new FileNotFoundException("File " + file.getName() + " was not found.");
-        }
+        file.createNewFile();
+
         FileWriter fileWriter = new FileWriter(file);
         bufferedWriter = new BufferedWriter(fileWriter);
 

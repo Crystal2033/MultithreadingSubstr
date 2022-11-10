@@ -13,7 +13,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import static Settings.CONSTANTS.*;
+import static Settings.CONSTANTS.VALUE_OF_THREADS;
+
 /**
  * @project SubstrFinder
  * ©Crystal2033
